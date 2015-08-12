@@ -1,0 +1,61 @@
+<div class="container">
+
+	<% if session[:username].nil? %>
+		<h3>Log in to post tweet...</h3>
+	<% else %>
+		<h1>Hello <%= @twitter_user.username %></h1>
+		
+		<form action="/" method="post" id="new_tweet">
+		  <input type="text" name="lol" placeholder="Tweet here...">
+		  <input id="submit_button" type="submit" value="Post it up!">
+		</form>
+
+		<div id="ajax_loader" style="display:none;">
+			<img src="/images/ajax-loader.gif"><br><br>
+			Loading...
+		</div>
+
+		<br>
+		
+		<div id="tweets">
+  			<!-- ajax enter tweets_show.erb here -->
+		</div>
+	<% end %>
+
+
+	<% if session[:username].nil? %>
+	<a href="/login"><input class="login" type="submit" value="Login"></a>
+	<% else %>
+	<br>
+	<a href="/logout"><input class="logout" type="submit" value="Logout"></a></a>
+	<% end %>
+
+
+</div>
+
+<script>
+$(document).ready(function() {
+	$('#new_tweet').submit(function(e){
+		var x = $("#new_tweet").serialize();
+		e.preventDefault();
+		$('#ajax_loader').show();
+		$('#submit_button').attr('disabled',true);
+		$.ajax({
+			type: "POST",
+			url: "/",
+			data: x,
+			success: function(response){
+				// alert("success");
+				$('#tweets').html(response);
+			},
+			error: function(){
+				alert("Error mate error...");
+			},
+			complete: function(){
+				$('#ajax_loader').hide();
+				$('#submit_button').attr('disabled',false);
+			}
+		});
+	});
+});
+</script>
