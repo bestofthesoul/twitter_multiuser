@@ -1,9 +1,10 @@
 <div class="container">
 
 	<% if session[:username].nil? %>
-		<h3>Log in to post tweet...</h3>
+		<h3>Log in to your own account</h3>
+		<a href="/login"><input class="login" type="submit" value="Login"></a>
 	<% else %>
-		<h1>Hello <%= @twitter_user.username %></h1>
+		<h1>Hi, <%= @twitter_user.username %></h1>
 		
 		<form action="/" method="post" id="new_tweet">
 		  <input type="text" name="lol" placeholder="Tweet here...">
@@ -20,17 +21,10 @@
 		<div id="tweets">
   			<!-- ajax enter tweets_show.erb here -->
 		</div>
+
+		<br>
+		<a href="/logout"><input class="logout" type="submit" value="Logout"></a></a>
 	<% end %>
-
-
-	<% if session[:username].nil? %>
-	<a href="/login"><input class="login" type="submit" value="Login"></a>
-	<% else %>
-	<br>
-	<a href="/logout"><input class="logout" type="submit" value="Logout"></a></a>
-	<% end %>
-
-
 </div>
 
 <script>

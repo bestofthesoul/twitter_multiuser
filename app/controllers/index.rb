@@ -3,6 +3,13 @@ get '/' do
 	erb :index
 end
 
+get '/login' do
+	session[:admin] = true
+	redirect to ("/auth/twitter")
+end
+
+
+
 post '/' do
 	@twitter_user = TwitterUser.find_by_username(session[:username])
 	# byebug shows that on index erb, params = {tweet => XXX}, because variable is tweet
@@ -20,6 +27,12 @@ post '/' do
 end
 
 
+
+# https://github.com/arunagw/omniauth-twitter
+
+# You should have already installed OmniAuth into your app; if not, read the OmniAuth README to get started.
+# Now sign in into the Twitter developer area and create an application. Take note of your API Key and API Secret (not the Access Token and Access Token Secret) because that is what your web application will use to authenticate against the Twitter API. Make sure to set a callback URL or else you may get authentication errors. (It doesn't matter what it is, just that it is set.)
+
 get '/auth/twitter/callback' do
 	env['omniauth.auth'] ? session[:admin] = true : halt(401,'Not Authorised')
 	# byebug
@@ -35,14 +48,11 @@ get '/auth/twitter/callback' do
 	redirect '/'
 end
 
+# if username /password is keyed in wrongly...
 get '/auth/failure' do
 	params[:message]
 end
 
-get '/login' do
-	session[:admin] = true
-	redirect to ("/auth/twitter")
-end
 
 get '/logout' do
 	# session[:admin].clear
@@ -55,19 +65,18 @@ end
 
 
 
-
-# get '/:username' do
+# post '/:username' do
 #   @twitter_user = TwitterUser.find_or_create_by(username: params['username'])
 #   @tweets = @twitter_user.tweets
 
 #   if @tweets.empty?
-#     @twitter_user.fetch_tweets(params['username'])
+#     @twitter_user.fetch_other_tweets(params['username'])
 #   elsif @tweets.last.still_valid?
 #     @tweets = @twitter_user.tweets.all
 #   else
-#     @twitter_user.fetch_tweets(params['username'])
+#     @twitter_user.fetch_other_tweets(params['username'])
 #   end
-#   erb :tweet_show
+#   erb :_tweet_box
 
 # end
 

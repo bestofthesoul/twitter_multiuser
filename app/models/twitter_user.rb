@@ -31,6 +31,7 @@ class TwitterUser < ActiveRecord::Base
   end
 
 
+
   def post_tweet(a)
     client = generate(self)
     client.update(a)    
@@ -63,3 +64,21 @@ class TwitterUser < ActiveRecord::Base
     end
   
 end
+
+
+
+
+  # def fetch_other_tweets(username)
+  #   @twitter_user = TwitterUser.find_or_create_by(username: username)
+  #   @tweets = @twitter_user.tweets
+
+  #   if !@tweets.empty?
+  #     @twitter_user.tweets.destroy_all
+  #   end
+  #   client = generate(self)
+  #   @tweets = client.user_timeline(username, count: 10)
+  #   @tweets.each do |tweet|
+  #   @twitter_user.tweets.create(tweet: tweet.tweet)
+  #   end
+  # end
+
